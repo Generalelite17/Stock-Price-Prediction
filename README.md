@@ -75,20 +75,7 @@ pip install -r requirements.txt
 🏆 About Me
 I am a mechanical engineer with a master's in computer science, passionate about quantitative finance, AI, and software engineering. This project reflects my curiosity about financial markets and my technical expertise in data-driven decision-making.
 
-📫 Connect with me:
-
-GitHub
-LinkedIn
 
 
-### **How to Add This to Your GitHub Repository**
-1. **Go to your GitHub repo** for this project.  
-2. Click **"Add File" > "Create new file"**.  
-3. Name it **README.md**.  
-4. **Paste** the text above into the file.  
-5. Click **"Commit changes"** at the bottom.  
 
-Now your **GitHub repository** will display a professional README! 🚀🔥  
-
-Let me know if you need any edits! ✅
 
