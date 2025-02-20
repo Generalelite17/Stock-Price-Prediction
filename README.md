@@ -1,62 +1,101 @@
 # 📈 Stock Price Movement Prediction
 
-## 🔍 Overview
-This project predicts the movement of stock prices (up or down) using historical data from **Yahoo Finance**. It leverages **machine learning models** such as **logistic regression** and **random forests** to classify whether the closing price will increase the next day.  
+## Overview
+This project is designed to predict the daily movement of stock prices—specifically, whether the closing price will increase (Up) or decrease (Down) the next day. The pipeline includes data collection, feature engineering to compute technical indicators, model training with XGBoost, and evaluation using accuracy metrics, confusion matrices, and classification reports.
 
-By building this, I aim to showcase my skills in **data science, machine learning, and financial analysis** while expanding my knowledge of quantitative finance.  
-
----
-
-## 🛠 Technologies Used
-- **Python**  
-- **Yahoo Finance API (`yfinance`)** – For fetching historical stock prices  
-- **Pandas & NumPy** – For data manipulation  
-- **Scikit-learn** – For machine learning models  
-- **Matplotlib & Seaborn** – For data visualization  
+*Note: For development and testing purposes, dummy data is used to simulate stock market data. The pipeline is structured to easily switch to real data from Yahoo Finance once API rate-limiting issues are resolved.*
 
 ---
 
-## 📊 Data Collection
-The dataset is retrieved from **Yahoo Finance**, containing the following columns:  
-
-- `Open`, `High`, `Low`, `Close` prices  
-- `Volume` (trading volume)  
-- `Moving Averages (MA10, MA50)`  
-- `Daily Returns`  
-- `Target Variable` (1 = price goes up, 0 = price goes down)  
+## Technologies Used
+- **Python**
+- **Pandas & NumPy** – Data manipulation and numerical operations.
+- **yfinance** – For fetching historical stock data (to be used when rate limits are resolved).
+- **Scikit-learn** – For data splitting, model evaluation, and hyperparameter tuning.
+- **XGBoost** – Machine learning model used for prediction.
+- **Matplotlib & Seaborn** – For data visualization (confusion matrix, plots, etc.).
+- **Logging** – To track and debug the pipeline's execution.
 
 ---
 
-## 🧑‍💻 Sample Code
-```python
-import yfinance as yf
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+## Data Collection & Preprocessing
+The project is designed to work with data containing the following columns:
+- **Date, Open, High, Low, Close, Volume**
 
-# Download historical data for a given stock
-ticker = "AAPL"
-stock_data = yf.download(ticker, start="2020-01-01", end="2025-01-01")
+For now, dummy data is generated using the following structure:
+- A date range starting from 2020-01-01.
+- Randomly generated values for stock prices (`Open`, `High`, `Low`, `Close`) and `Volume`.
 
-# Feature Engineering
-stock_data["MA10"] = stock_data["Close"].rolling(window=10).mean()
-stock_data["MA50"] = stock_data["Close"].rolling(window=50).mean()
-stock_data["Daily_Return"] = stock_data["Close"].pct_change()
-stock_data["Target"] = (stock_data["Close"].shift(-1) > stock_data["Close"]).astype(int)
+### Feature Engineering
+The pipeline computes several technical indicators:
+- **Moving Averages (MA5, MA10, MA50)**
+- **Exponential Moving Averages (EMA12, EMA26)**
+- **Daily Returns and Volatility**
+- **Relative Strength Index (RSI)**
+- **MACD and Signal Line**
+- **Bollinger Bands and Bollinger Band Width**
+- **Volume Moving Average (Volume_MA10)**
+- **Momentum (5-day percentage change)**
+- **Lag Features for both Close and Volume (lag 1, 2, and 3 days)**
+- **Target Variable:** Binary indicator (1 if next day's close > today's close, else 0).
 
-# Prepare data
-features = ["MA10", "MA50", "Daily_Return"]
-X = stock_data[features].dropna()
-y = stock_data.loc[X.index, "Target"]
+---
 
-# Split dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+## Project Structure
+```
+Stock-Price-Prediction/
+│
+├── data/
+│   ├── AAPL_data.csv         # Raw dummy data (or real data when available)
+│   └── processed_data.csv    # Data after feature engineering
+│
+├── main.py                   # Main script that runs the entire pipeline
+├── README.md                 # This file
+└── requirements.txt          # List of dependencies
+```
 
-# Train model
-model = LogisticRegression()
-model.fit(X_train, y_train)
+---
 
-# Evaluate
-accuracy = accuracy_score(y_test, model.predict(X_test))
-print(f"Model Accuracy: {accuracy:.2f}")
+## How to Run the Project
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/Stock-Price-Prediction.git
+   cd Stock-Price-Prediction
+   ```
+
+2. **Install the required packages:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the main script:**
+   ```bash
+   python main.py
+   ```
+
+*Note: The current setup uses dummy data. To switch to real data, uncomment the relevant data collection code in `main.py` and ensure you resolve any API rate limit issues with Yahoo Finance.*
+
+---
+
+## Model Evaluation
+The project uses XGBoost with hyperparameter tuning via grid search and time-series cross-validation. The model's performance is evaluated using:
+- **Accuracy**
+- **Confusion Matrix:** Visualized with Seaborn heatmaps.
+- **Classification Report:** Providing precision, recall, F1-score, and support for each class.
+
+Example output on dummy data:
+- **Accuracy:** ~73%
+- **Confusion Matrix & Classification Report:** Displayed in the console and as a plot.
+
+---
+
+## Future Enhancements
+- **Real Data Integration:** Resolve rate-limiting issues with Yahoo Finance or use an alternative data provider (e.g., Alpha Vantage, IEX Cloud) to fetch real stock data.
+- **Hyperparameter Optimization:** Experiment with additional hyperparameters or alternative models (e.g., LSTM networks) to improve performance.
+- **Deployment:** Consider deploying the model as an API using Flask/FastAPI or building a dashboard with Streamlit or Dash for live predictions.
+- **Documentation & Testing:** Expand unit tests and documentation for each module to improve maintainability and facilitate future development.
+
+---
+
+## License
+This project is licensed under the [MIT License](LICENSE).
