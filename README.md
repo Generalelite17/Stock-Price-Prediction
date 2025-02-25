@@ -42,7 +42,7 @@ The pipeline computes several technical indicators:
 ---
 
 ## Project Structure
-
+```bash
 Stock-Price-Prediction/
 ├── data/
 │   ├── raw_data.csv              # Raw stock data (dummy or real API data)
@@ -55,7 +55,7 @@ Stock-Price-Prediction/
 ├── README.md                     # Project overview and documentation
 ├── requirements.txt              # List of dependencies with version specifications
 └── LICENSE                       # License file (e.g., MIT License)
-
+```
 
 ## How to Run the Project
 1. **Clone the repository:**
