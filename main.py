@@ -10,25 +10,8 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt  # Plotting
 import seaborn as sns  # Pretty visualizations
 import xgboost as xgb 
-
 import pandas as pd
 import numpy as np
-
-# Create a date range
-dates = pd.date_range(start="2020-01-01", periods=10000, freq='D')
-
-# Generate dummy stock data
-dummy_data = pd.DataFrame({
-    'Date': dates,
-    'Close': np.random.uniform(100, 150, size=10000),
-    'High': np.random.uniform(100, 150, size=10000),
-    'Low': np.random.uniform(100, 150, size=10000),
-    'Open': np.random.uniform(100, 150, size=10000),
-    'Volume': np.random.randint(100000, 200000, size=10000)
-})
-
-print("Dummy data shape:", dummy_data.shape)
-print(dummy_data.head())
 
 # Data Collection
 def fetch_stock_data(ticker, start_date, end_date):
@@ -50,7 +33,7 @@ def fetch_stock_data(ticker, start_date, end_date):
 # Feature Engineering
 def feature_engineering(stock_data):
  
- """
+    """
     Perform feature engineering on stock data.
 
     Computes technical indicators including moving averages, exponential moving averages,
@@ -133,6 +116,15 @@ def feature_engineering(stock_data):
 
 # Evaluation
 def plot_confusion_matrix(y_true, y_pred):
+
+    """
+    Plot and display a confusion matrix along with a classification report.
+
+    Parameters:
+    - y_true (array-like): True labels.
+    - y_pred (array-like): Predicted labels.
+    """
+
     cm = confusion_matrix(y_true, y_pred)
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=["Down", "Up"], yticklabels=["Down", "Up"])
     plt.xlabel("Predicted")
@@ -156,30 +148,46 @@ def run_project():
     else:
         logging.debug("Data folder already exists") # Debuggin print - Confirms data folder exists and relays that to the terminal.
 
-    # Data Collection
-    #ticker = "AAPL"
-    #Today = datetime.today().strftime("%Y-%m-%d")
-    #stock_data = fetch_stock_data(ticker, "2020-01-01", Today)
-    #logging.debug("Stock Data Downloaded!")  # Debugging print
-    #print("Raw data shape:", stock_data.shape)
-    #print(stock_data.head())
-
-    dummy_data.to_csv("data/AAPL_data.csv")
-
-    # stock_data.columns = stock_data.columns.droplevel(0)  # Drop the first level (Price)
-
-    # # Rename the columns to reflect the actual price types
-    # stock_data.columns = ['Date','Close', 'High', 'Low', 'Open', 'Volume']
-
-    # stock_data.columns.name = None  # Remove the name of columns
+    """
+    These lines handle data collection from the Yahoo Finance API.
+    If you prefer using generated dummy data (to avoid API rate limits), comment out
+    the API lines below and uncomment the dummy_data line.
     
-    # stock_data.to_csv("data/AAPL_data_1.csv")
+    """
+    # Data Collection from Yahoo Finance AP
+    ticker = "AAPL"
+    Today = datetime.today().strftime("%Y-%m-%d")
+    stock_data = fetch_stock_data(ticker, "2020-01-01", Today)
+    logging.debug("Stock Data Downloaded!")  # Debugging print
+    print("Raw data shape:", stock_data.shape)
+    print(stock_data.head())
 
-    # print(stock_data.head())  # Check first few rows
-    # print(stock_data.columns)  # Check column headers
+    # Save the raw stock data from the Yahoo Finance API to CSV
+    stock_data.to_csv("data/raw_data.csv")
+
+    # Remove the second level of the MultiIndex
+    stock_data.columns = stock_data.columns.droplevel(1)  # Drop the first level (Price)
+
+    # Convert the index (holding the Date) into a normal column
+    stock_data = stock_data.reset_index()  # Moves Date from index to a real column
+
+    # Rename columns to match the actual data (now including Date)
+    stock_data.columns = ['Date','Close', 'High', 'Low', 'Open', 'Volume']
+    
+    # Save the unprocessed data for further processing
+    stock_data.to_csv("data/unprocessed_data.csv")
+
+    print(stock_data.head())  # Check first few rows
+    print(stock_data.columns)  # Check column headers
+
+    """
+    Option: Use generated dummy data instead of live API data.
+    Uncomment the following line (and update references accordingly) if using dummy_data:
+    """
+    # stock_data = dummy_data.to_csv("data/generated_data.csv")
 
     # Feature Engineering
-    processed_data = feature_engineering(dummy_data)
+    processed_data = feature_engineering(stock_data)
     processed_data.to_csv("data/processed_data.csv", index=False)
     logging.debug("Data processed and saved!")  # Debugging print
 
