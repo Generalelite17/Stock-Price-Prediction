@@ -108,8 +108,10 @@ def feature_engineering(stock_data):
         stock_data[f'Close_lag{lag}'] = stock_data["Close"].shift(lag)
         stock_data[f'Volume_lag{lag}'] = stock_data["Volume"].shift(lag)
 
-    # Target - 1 if price increased the next day, 0 if it decreased
-    stock_data["Target"] = (stock_data["Close"].shift(-1) > stock_data["Close"]).astype(int)
+    # Calculate percentage change for target calculation
+    price_change = stock_data["Close"].shift(-1) / stock_data["Close"] - 1
+    threshold = 0.01  # 1% threshold
+    stock_data["Target"] = (price_change >= threshold).astype(int)
 
     # Drop rows with NaN values after feature engineering
     return stock_data.dropna()
@@ -240,6 +242,8 @@ def run_project():
     predictions = best_model.predict(X_test)
     accuracy = accuracy_score(y_test, predictions)
     print(f"XGBoost Model Accuracy: {accuracy:.2f}")
+
+    print(processed_data["Target"].value_counts())
 
    # Call the custom confusion matrix plotting function
     plot_confusion_matrix(y_test, predictions)

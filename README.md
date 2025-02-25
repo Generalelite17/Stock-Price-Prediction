@@ -44,15 +44,18 @@ The pipeline computes several technical indicators:
 ## Project Structure
 ```
 Stock-Price-Prediction/
-│
 ├── data/
-│   ├── AAPL_data.csv         # Raw dummy data (or real data when available)
-│   └── processed_data.csv    # Data after feature engineering
+│   ├── raw_data.csv              # Raw stock data (dummy or real API data)
+│   ├── unprocessed_data.csv      # Data after initial preprocessing (e.g., dropping extra headers)
+│   └── processed_data.csv        # Data after full feature engineering
 │
-├── main.py                   # Main script that runs the entire pipeline
-├── README.md                 # This file
-└── requirements.txt          # List of dependencies
-```
+├── dummy_data_generation.py      # Script for generating dummy stock data
+├── yf_api_connection_test.py     # Script for testing Yahoo Finance API connectivity
+├── main.py                       # Main script that runs the entire pipeline
+├── README.md                     # Project overview and documentation
+├── requirements.txt              # List of dependencies with version specifications
+└── LICENSE                       # License file (e.g., MIT License)
+
 
 ---
 
@@ -73,7 +76,7 @@ Stock-Price-Prediction/
    python main.py
    ```
 
-*Note: The current setup uses dummy data. To switch to real data, uncomment the relevant data collection code in `main.py` and ensure you resolve any API rate limit issues with Yahoo Finance.*
+*Note: The current setup usese real data fetched from the Yahoo Finance API. However, if needed,  you can switch to generated dummy data for testing by uncommenting the dummy data for testing by uncommenting the dummy data collection code in `main.py`.*
 
 ---
 
@@ -86,6 +89,21 @@ The project uses XGBoost with hyperparameter tuning via grid search and time-ser
 Example output on dummy data:
 - **Accuracy:** ~73%
 - **Confusion Matrix & Classification Report:** Displayed in the console and as a plot.
+
+Example Output on Real Data:
+- **Accuracy:** ~75%
+
+Confusion Matrix & Classification Report:
+- The confusion matrix and classification report are displayed both in the console and as a plot. For example, you might observe that:
+- The Down class has high recall (e.g., 0.75–0.99).
+- The Up class shows very low recall (e.g., 0.00–0.14) and an F1-score near 0.
+- This suggests that while overall accuracy is around 75%, the model is biased toward predicting the "Down" class.
+
+Potential Issues:
+
+- **Class Imbalance:** The target distribution (e.g., 901 Down vs. 343 Up) can cause the model to favor the majority class, leading to poor performance for the "Up" class.
+- **Target Definition:** The binary target (1 if next-day closing price increases by at least 1%, else 0) might capture noise or fail to effectively differentiate meaningful upward moves.
+- **Feature Informativeness:** The current technical indicators may not be sufficient for the model to reliably predict upward movements.
 
 ---
 
