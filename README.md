@@ -103,7 +103,6 @@ Potential Issues:
 ---
 
 ## Future Enhancements
-- **Real Data Integration:** Resolve rate-limiting issues with Yahoo Finance or use an alternative data provider (e.g., Alpha Vantage, IEX Cloud) to fetch real stock data.
 - **Hyperparameter Optimization:** Experiment with additional hyperparameters or alternative models (e.g., LSTM networks) to improve performance.
 - **Deployment:** Consider deploying the model as an API using Flask/FastAPI or building a dashboard with Streamlit or Dash for live predictions.
 - **Documentation & Testing:** Expand unit tests and documentation for each module to improve maintainability and facilitate future development.
