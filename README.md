@@ -42,25 +42,25 @@ The pipeline computes several technical indicators:
 ---
 
 ## Project Structure
-```
-    Stock-Price-Prediction/
-    ├── data/
-    │   ├── raw_data.csv              # Raw stock data (dummy or real API data)
-    │   ├── unprocessed_data.csv      # Data after initial preprocessing (e.g., dropping extra headers)
-    │   └── processed_data.csv        # Data after full feature engineering
-    │
-    ├── dummy_data_generation.py      # Script for generating dummy stock data
-    ├── yf_api_connection_test.py     # Script for testing Yahoo Finance API connectivity
-    ├── main.py                       # Main script that runs the entire pipeline
-    ├── README.md                     # Project overview and documentation
-    ├── requirements.txt              # List of dependencies with version specifications
-    └── LICENSE                       # License file (e.g., MIT License)
----
+
+Stock-Price-Prediction/
+├── data/
+│   ├── raw_data.csv              # Raw stock data (dummy or real API data)
+│   ├── unprocessed_data.csv      # Data after initial preprocessing (e.g., dropping extra headers)
+│   └── processed_data.csv        # Data after full feature engineering
+│
+├── dummy_data_generation.py      # Script for generating dummy stock data
+├── yf_api_connection_test.py     # Script for testing Yahoo Finance API connectivity
+├── main.py                       # Main script that runs the entire pipeline
+├── README.md                     # Project overview and documentation
+├── requirements.txt              # List of dependencies with version specifications
+└── LICENSE                       # License file (e.g., MIT License)
+
 
 ## How to Run the Project
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/Stock-Price-Prediction.git
+   git clone https://github.com/Generalelite17/Stock-Price-Prediction.git
    cd Stock-Price-Prediction
    ```
 
@@ -97,7 +97,6 @@ Confusion Matrix & Classification Report:
 - This suggests that while overall accuracy is around 75%, the model is biased toward predicting the "Down" class.
 
 Potential Issues:
-
 - **Class Imbalance:** The target distribution (e.g., 901 Down vs. 343 Up) can cause the model to favor the majority class, leading to poor performance for the "Up" class.
 - **Target Definition:** The binary target (1 if next-day closing price increases by at least 1%, else 0) might capture noise or fail to effectively differentiate meaningful upward moves.
 - **Feature Informativeness:** The current technical indicators may not be sufficient for the model to reliably predict upward movements.
