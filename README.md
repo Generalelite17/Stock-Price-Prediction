@@ -2,9 +2,6 @@
 
 ## Overview
 This project is designed to predict the daily movement of stock prices—specifically, whether the closing price will increase (Up) or decrease (Down) the next day. The pipeline includes data collection, feature engineering to compute technical indicators, model training with XGBoost, and evaluation using accuracy metrics, confusion matrices, and classification reports.
-
-*Note: For development and testing purposes, dummy data is used to simulate stock market data. The pipeline is structured to easily switch to real data from Yahoo Finance once API rate-limiting issues are resolved.*
-
 ---
 
 ## Technologies Used
@@ -19,12 +16,14 @@ This project is designed to predict the daily movement of stock prices—specifi
 ---
 
 ## Data Collection & Preprocessing
+Data is primarily sourced from the **Yahoo Finance API**, which provides historical stock data including daily prices and volume. 
 The project is designed to work with data containing the following columns:
 - **Date, Open, High, Low, Close, Volume**
 
-For now, dummy data is generated using the following structure:
-- A date range starting from 2020-01-01.
+For testing purposes, dummy data can be used when API access is unavailable or to simulate stock data locally without external dependencies. The generated data follows this structure:
+- A date range starting from 2020-01-01.  
 - Randomly generated values for stock prices (`Open`, `High`, `Low`, `Close`) and `Volume`.
+
 
 ### Feature Engineering
 The pipeline computes several technical indicators:
@@ -74,7 +73,7 @@ Stock-Price-Prediction/
    python main.py
    ```
 
-*Note: The current setup usese real data fetched from the Yahoo Finance API. However, if needed,  you can switch to generated dummy data for testing by uncommenting the dummy data  collection code in `main.py`.*
+*Note: The current setup uses real data fetched from the Yahoo Finance API. However, if needed,  you can switch to generated dummy data for testing by uncommenting the dummy data  collection code in `main.py`.*
 
 ---
 
@@ -87,14 +86,14 @@ The project uses XGBoost with hyperparameter tuning via grid search and time-ser
 Example output on dummy data:
 - **Accuracy:** ~73%
 
-Example Output on Real Data:
+**Example Output on Real Data:**
 - **Accuracy:** ~75%
+- **Confusion Matrix & Classification Report:**  
+   - The confusion matrix and classification report are displayed both in the console and as a plot. For example, you might observe that:  
+      - **Down Class:** High recall (e.g., 0.75–0.99) indicates the model is effective at predicting downward movements.  
+      - **Up Class:** Low recall (e.g., 0.00–0.14) and a low F1-score suggest difficulty in correctly identifying upward movements.  
+      - Overall, while the accuracy is approximately 75%, the model is biased toward predicting the "Down" class.  
 
-Confusion Matrix & Classification Report:
-- The confusion matrix and classification report are displayed both in the console and as a plot. For example, you might observe that:
-- The Down class has high recall (e.g., 0.75–0.99).
-- The Up class shows very low recall (e.g., 0.00–0.14) and an F1-score near 0.
-- This suggests that while overall accuracy is around 75%, the model is biased toward predicting the "Down" class.
 
 Potential Issues:
 - **Class Imbalance:** The target distribution (e.g., 901 Down vs. 343 Up) can cause the model to favor the majority class, leading to poor performance for the "Up" class.
