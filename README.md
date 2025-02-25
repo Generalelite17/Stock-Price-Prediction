@@ -43,20 +43,18 @@ The pipeline computes several technical indicators:
 
 ## Project Structure
 ```
-Stock-Price-Prediction/
-├── data/
-│   ├── raw_data.csv              # Raw stock data (dummy or real API data)
-│   ├── unprocessed_data.csv      # Data after initial preprocessing (e.g., dropping extra headers)
-│   └── processed_data.csv        # Data after full feature engineering
-│
-├── dummy_data_generation.py      # Script for generating dummy stock data
-├── yf_api_connection_test.py     # Script for testing Yahoo Finance API connectivity
-├── main.py                       # Main script that runs the entire pipeline
-├── README.md                     # Project overview and documentation
-├── requirements.txt              # List of dependencies with version specifications
-└── LICENSE                       # License file (e.g., MIT License)
-
-
+    Stock-Price-Prediction/
+    ├── data/
+    │   ├── raw_data.csv              # Raw stock data (dummy or real API data)
+    │   ├── unprocessed_data.csv      # Data after initial preprocessing (e.g., dropping extra headers)
+    │   └── processed_data.csv        # Data after full feature engineering
+    │
+    ├── dummy_data_generation.py      # Script for generating dummy stock data
+    ├── yf_api_connection_test.py     # Script for testing Yahoo Finance API connectivity
+    ├── main.py                       # Main script that runs the entire pipeline
+    ├── README.md                     # Project overview and documentation
+    ├── requirements.txt              # List of dependencies with version specifications
+    └── LICENSE                       # License file (e.g., MIT License)
 ---
 
 ## How to Run the Project
@@ -76,7 +74,7 @@ Stock-Price-Prediction/
    python main.py
    ```
 
-*Note: The current setup usese real data fetched from the Yahoo Finance API. However, if needed,  you can switch to generated dummy data for testing by uncommenting the dummy data for testing by uncommenting the dummy data collection code in `main.py`.*
+*Note: The current setup usese real data fetched from the Yahoo Finance API. However, if needed,  you can switch to generated dummy data for testing by uncommenting the dummy data  collection code in `main.py`.*
 
 ---
 
@@ -88,7 +86,6 @@ The project uses XGBoost with hyperparameter tuning via grid search and time-ser
 
 Example output on dummy data:
 - **Accuracy:** ~73%
-- **Confusion Matrix & Classification Report:** Displayed in the console and as a plot.
 
 Example Output on Real Data:
 - **Accuracy:** ~75%
